@@ -29,7 +29,7 @@ def generateCRS(key, csrpath, entity):
     req.get_subject().OU = entity
     req.get_subject().emailAddress = entity + '@ucr.ac.cr'    
     req.set_pubkey(key)
-    req.sign(key)        
+    req.sign(key, "sha512")        
    
     ca_file = open(csrpath, 'wb')
     ca_file.write(crypto.dump_certificate(crypto.FILETYPE_TEXT, req))
