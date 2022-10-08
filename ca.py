@@ -45,8 +45,8 @@ def main():
             keypath = HOME + "/" + entity + '.key'
             csrpath = HOME + "/" + entity + '.csr'
             crtpath = HOME + "/" + entity + '.crt'
-            key = generatekey("hola")
-            generateCRS(key, "csrpath", entity)
+            key = generatekey(keypath)
+            generateCRS(key, csrpath, entity)
             print ("La llave privada se encuentra en:" + keypath)
             print ("El CSR se encuentra en:" + csrpath)
             break
