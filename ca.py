@@ -32,7 +32,7 @@ def generateCRS(key, csrpath, entity):
     req.sign(key, "sha512")        
    
     ca_file = open(csrpath, 'wb')
-    ca_file.write(crypto.dump_certificate(crypto.FILETYPE_TEXT, req))
+    ca_file.write(crypto.dump_certificate(crypto.FILETYPE_PEM, req))
     ca_file.close()  
 
 
