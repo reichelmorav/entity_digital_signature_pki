@@ -5,10 +5,11 @@ TYPE_RSA = crypto.TYPE_RSA
 TYPE_DSA = crypto.TYPE_DSA
 HOME = os.getenv("HOME")
 
-CN = "Costa Rica"
+C = "CR"
 ST = "San Jose"
 L = "San Pedro"
 O = "UCR"
+CN = "Por definir"
 
 def generatekey(keypath):
     key = crypto.PKey()
@@ -20,20 +21,22 @@ def generatekey(keypath):
 
 def generateCRS(key, csrpath, entity):
     req = crypto.X509()
-    req.get_subject().CN = CN     
+    req.get_subject().C = C     
     req.get_subject().ST = ST
     req.get_subject().L = L
     req.get_subject().O = O
+    req.get_subject().CN = CN
     req.get_subject().OU = entity
     req.get_subject().emailAddress = entity + '@ucr.ac.cr'    
-    req.set_pubkey(key)        
+    req.set_pubkey(key)
+            
    
     ca_file = open(csrpath, 'wb')
     ca_file.write(crypto.dump_certificate(crypto.FILETYPE_TEXT, req))
     ca_file.close()  
 
 
-if __name__ == "__main__":
+def main():
     while(True):    
         option = input("Bienvenido. \n 1. Generar certificado para unidad \n 2. Salir \n¿Cuál opción desea?: ")
         if(option == "1"):       
@@ -50,3 +53,7 @@ if __name__ == "__main__":
             break
         else:
             print("La opción seleccionada no es correcta. Intentelo de nuevo\n")
+
+if __name__ == "__main__":
+    main()
+    
