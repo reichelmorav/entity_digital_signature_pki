@@ -8,8 +8,8 @@ HOME = os.getenv("HOME")
 C = "CR"
 ST = "San Jose"
 L = "San Pedro"
-O = "UCR"
-CN = "Por definir"
+O = "UCR ECCI ITI"
+OU = "II 2022"
 
 def generatekey(keypath):
     key = crypto.PKey()
@@ -20,19 +20,19 @@ def generatekey(keypath):
     return key
 
 def generateCRS(key, csrpath, entity):
-    req = crypto.X509()
+    req = crypto.X509Req()
     req.get_subject().C = C     
     req.get_subject().ST = ST
     req.get_subject().L = L
-    req.get_subject().O = O
-    req.get_subject().CN = CN
-    req.get_subject().OU = entity
+    req.get_subject().O = O     
+    req.get_subject().OU = OU
+    req.get_subject().CN = entity.upper()
     req.get_subject().emailAddress = entity + '@ucr.ac.cr'    
     req.set_pubkey(key)
     req.sign(key, "sha512")        
    
     ca_file = open(csrpath, 'wb')
-    ca_file.write(crypto.dump_certificate(crypto.FILETYPE_PEM, req))
+    ca_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM, req))
     ca_file.close()  
 
 
@@ -45,10 +45,11 @@ def main():
             keypath = HOME + "/" + entity + '.key'
             csrpath = HOME + "/" + entity + '.csr'
             crtpath = HOME + "/" + entity + '.crt'
-            key = generatekey(keypath)
-            generateCRS(key, csrpath, entity)
+            key = generatekey("hola")
+            generateCRS(key, "csrpath", entity)
             print ("La llave privada se encuentra en:" + keypath)
             print ("El CSR se encuentra en:" + csrpath)
+            break
         elif(option == "2"):            
             break
         else:
