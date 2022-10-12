@@ -28,9 +28,13 @@ def main():
 
         #p = os.popen('sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')
         #p.write("1234")
-        os.system('echo 1234 | sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
+        #os.system('echo 1234 | sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
         #os.system("2728")
 
+        subprocess.Popen('sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem' , shell=True,stdout=subprocess.PIPE)
+        subprocess.Popen('1234' , shell=True,stdout=subprocess.PIPE)
+        
+        
         #p = Popen('sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem', stdout=PIPE, stdin=PIPE, stderr=PIPE)
         # for x in range(100):
         #     print("Hola")        
