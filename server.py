@@ -10,7 +10,7 @@ def main():
     sock.listen(4)   
 
     while True:
-        connection = sock.accept()                     
+        connection, direction = sock.accept()                     
         certificate = connection.recv(2048)       
         
         file = open('crs.crs', 'wb')
