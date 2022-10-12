@@ -32,7 +32,7 @@ def main():
         #os.system("2728")
 
         p = Popen('sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem', shell=True, stdin=PIPE)
-        p.stdin.write("1234".encode())
+        p.communicate(input='1234'.encode())
 
         connection.close()
 
