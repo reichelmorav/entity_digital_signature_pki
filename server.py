@@ -13,9 +13,13 @@ def main():
         connection, direction = sock.accept()                     
         certificate = connection.recv(2048)       
         
-        file = open('crs.crs', 'wb')
+        file = open('csr.csr', 'wb')
         file.write(certificate)
-        file.close()         
+        file.close() 
+
+        os.system("sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf \
+        -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext \
+        -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem")        
 
         connection.close()
 
