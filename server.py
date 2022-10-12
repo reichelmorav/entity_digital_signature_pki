@@ -19,9 +19,7 @@ def main():
         file.write(certificate)
         file.close() 
 
-        subprocess.run(["sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf \
-        -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext \
-        -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem"], capture_output=True, text=True, input="2728")
+        subprocess.run(["sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem"], capture_output=True, text=True, input="1234")
 
         #os.system()   
 
