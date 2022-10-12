@@ -19,10 +19,10 @@ def main():
         file.write(certificate)
         file.close() 
         
-        foo_proc = subprocess.Popen(['sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        foo_proc.stdin.write(b"1234")
+        #foo_proc = subprocess.Popen(['sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        #foo_proc.stdin.write(b"1234")
 
-
+        subprocess.run(['sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem'], capture_output=True, text=True, input="y")
         #subprocess.run([""], capture_output=True, text=True, input="1234")
 
         #os.system()   
