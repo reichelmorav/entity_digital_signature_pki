@@ -1,38 +1,23 @@
-import socket
+import socket, os
 
-# Initialize Socket Instance
-sock = socket.socket()
-print ("Socket created successfully.")
+PORT = 8800
+HOST = ''
 
-# Defining port and host
-port = 8800
-host = ''
+def main():    
+    sock = socket.socket()      
+    sock .setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind((HOST, PORT))
+    sock.listen(4)   
 
-# binding to the host and port
-sock.bind((host, port))
+    while True:
+        connection = sock.accept()                     
+        certificate = connection.recv(2048)       
+        
+        file = open('crs.crs', 'wb')
+        file.write(certificate)
+        file.close()         
 
-# Accepts up to 10 connections
-sock.listen(10)
-print('Socket is listening...')
+        connection.close()
 
-while True:
-    # Establish connection with the clients.
-    con, addr = sock.accept()
-    print('Connected with ', addr)
-
-    # Get data from the client
-    data = con.recv(1024)
-    print(data.decode())
-    # Read File in binary
-    file = open('csr.pem', 'rb')
-    line = file.read(1024)
-
-    # Keep sending data to the client
-    while(line):
-        con.send(line)
-        line = file.read(1024)       
-    
-    file.close()
-    print('File has been transferred successfully.')
-
-    con.close()
+if __name__ == "__main__":
+    main()

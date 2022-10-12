@@ -1,6 +1,9 @@
 from OpenSSL import crypto
 import os
+import socket
 
+PORT = 8800
+HOST = 'localhost'
 TYPE_RSA = crypto.TYPE_RSA
 TYPE_DSA = crypto.TYPE_DSA
 HOME = os.getenv("HOME")
@@ -11,7 +14,7 @@ L = "San Pedro"
 O = "UCR ECCI ITI"
 OU = "II 2022"
 
-def generatekey(keypath):
+def generate_key(keypath):
     key = crypto.PKey()
     key.generate_key(TYPE_RSA, 4096)
     key_file = open(keypath, "wb")
@@ -19,7 +22,7 @@ def generatekey(keypath):
     key_file.close()
     return key
 
-def generateCRS(key, csrpath, entity):
+def generate_CRS(key, csrpath, entity):
     req = crypto.X509Req()
     req.get_subject().C = C     
     req.get_subject().ST = ST
@@ -35,25 +38,37 @@ def generateCRS(key, csrpath, entity):
     ca_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM, req))
     ca_file.close()  
 
+def send_to_sign(csrpath):
+    file = open(csrpath, 'rb')
+    certificate = file.read(2048) 
+    sock.send(certificate)    
+    file.close()
 
 def main():
+    global sock    
     while(True):    
-        option = input("Bienvenido. \n 1. Generar certificado para unidad \n 2. Salir \n¿Cuál opción desea?: ")
-        if(option == "1"):       
-            entity = input("Ingrese el nombre de la unidad: ")
-            #email = input("Ingrese el correo:")
-            keypath = HOME + "/" + entity + '.key'
-            csrpath = HOME + "/" + entity + '.csr'
-            crtpath = HOME + "/" + entity + '.crt'
-            key = generatekey(keypath)
-            generateCRS(key, csrpath, entity)
-            print ("La llave privada se encuentra en:" + keypath)
-            print ("El CSR se encuentra en:" + csrpath)
-            break
-        elif(option == "2"):            
-            break
-        else:
-            print("La opción seleccionada no es correcta. Intentelo de nuevo\n")
+        try:
+            sock = socket.socket()
+            sock.connect((HOST, PORT))
+            option = input("Bienvenido. \n 1. Generar certificado para unidad \n 2. Salir \n¿Cuál opción desea?: ")
+            if(option == "1"):       
+                entity = input("Ingrese el nombre de la unidad: ")          
+                keypath = HOME + "/" + entity + '.key'
+                csrpath = HOME + "/" + entity + '.csr'
+                crtpath = HOME + "/" + entity + '.crt'
+                key = generate_key(keypath)
+                generate_CRS(key, csrpath, entity)
+                send_to_sign(csrpath)
+                print ("La llave privada se encuentra en:" + keypath)
+                print ("El CSR se encuentra en:" + csrpath)
+                sock.close()
+                break
+            elif(option == "2"):            
+                break
+            else:
+                print("La opción seleccionada no es correcta. Intentelo de nuevo\n")
+        except:
+            print("An exception occurred") 
 
 if __name__ == "__main__":
     main()
