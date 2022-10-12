@@ -20,7 +20,7 @@ def main():
         file.write(certificate)
         file.close() 
       
-        os.system('echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
+        os.system('echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
        
         connection.close()
 
