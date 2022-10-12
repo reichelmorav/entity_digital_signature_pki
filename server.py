@@ -25,7 +25,9 @@ def main():
         #subprocess.run('sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem', capture_output=True, text=True, input="y")
         #subprocess.run([""], capture_output=True, text=True, input="1234")
 
-        os.system('echo 1234 | sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
+        p = os.popen('sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')
+        p.write("1234")
+        #os.system('echo 1234 | sudo openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
 
         #os.system("2728")
 
