@@ -59,7 +59,7 @@ def main():
                 generate_CRS(generate_key(keypath), csrpath, entity)
                 send_to_sign(csrpath)
                 crt_file = open(crtpath, 'wb')
-                crt_file.write(sock.recv(2048))                
+                crt_file.write(sock.recv(4096))                
                 print ("La llave privada se encuentra en: " + keypath)
                 print ("El CSR se encuentra en: " + csrpath)
                 print ("El certificado se encuentra en: " + crtpath)
