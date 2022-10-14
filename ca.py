@@ -61,6 +61,7 @@ def main():
                 line = sock.recv(1024)
                 while(line):                    
                     line = sock.recv(1024)
+                    print(line)
                 print ("La llave privada se encuentra en: " + keypath)
                 print ("El CSR se encuentra en: " + csrpath)
                 print ("El certificado se encuentra en: " + crtpath)
