@@ -14,7 +14,7 @@ def main():
         connection, direcction = sock.accept()                     
         entity_csr = connection.recv(2048)
         request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
-        common_name = request.get_subject().replace(" ", "")              
+        common_name = request.get_subject().commonName.replace(" ", "")              
         
         csr_file = open(common_name.strip() + '.csr', 'wb')
         csr_file.write(entity_csr)
