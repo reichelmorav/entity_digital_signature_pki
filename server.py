@@ -1,7 +1,7 @@
 import datetime, socket, os
 from OpenSSL import crypto
 
-PORT = 8800
+PORT = 9225
 HOST = ''
 
 def main():  

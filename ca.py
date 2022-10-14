@@ -2,7 +2,7 @@ from OpenSSL import crypto
 #from termcolor import colored 
 import os, socket
 
-PORT = 8800
+PORT = 9225
 HOST = '192.168.133.133'
 TYPE_RSA = crypto.TYPE_RSA
 TYPE_DSA = crypto.TYPE_DSA
