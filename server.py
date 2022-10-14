@@ -26,9 +26,8 @@ def main():
 
         os.system(command) 
 
-        #crt_file = open(common_name + '.pem', 'wb')
-        #entity_crt = crt_file.read()
-        connection.sendall('/home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem')      
+        crt_file = open('/home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem', 'rb')         
+        connection.sendall(crt_file.read())      
         
         connection.close()        
 
