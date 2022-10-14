@@ -1,5 +1,5 @@
 from OpenSSL import crypto
-from termcolor import colored 
+#from termcolor import colored 
 import os, socket
 
 PORT = 8800
