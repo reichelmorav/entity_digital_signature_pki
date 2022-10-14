@@ -4,16 +4,16 @@ from OpenSSL import crypto
 PORT = 8800
 HOST = ''
 
-def main():    
+def main():  
     sock = socket.socket()      
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((HOST, PORT))
-    sock.listen(4)   
+    sock.listen(4)       
 
     while True:
-        try:
-            connection= sock.accept()                     
-            entity_csr = connection[0].recv(2048)
+        try:            
+            connection, direcction = sock.accept()                     
+            entity_csr = connection.recv(2048)
             request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
             common_name = request.get_subject().commonName      
             
