@@ -14,7 +14,7 @@ def main():
         connection, direcction = sock.accept()                     
         entity_csr = connection.recv(2048)
         request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
-        common_name = request.get_subject().commonName      
+        common_name = request.get_subject().commonName.strip()      
         
         csr_file = open(common_name + '.csr', 'wb')
         csr_file.write(entity_csr)
@@ -28,6 +28,7 @@ def main():
 
         crt_file = open('/home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem', 'rb')         
         connection.sendall(crt_file.read())      
+        crt_file.close()
         
         connection.close()        
 
