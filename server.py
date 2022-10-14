@@ -10,30 +10,28 @@ def main():
     sock.bind((HOST, PORT))
     sock.listen(4)       
 
-    while True:
-        try:            
-            connection, direcction = sock.accept()                     
-            entity_csr = connection.recv(2048)
-            request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
-            common_name = request.get_subject().commonName      
-            
-            csr_file = open(common_name + '.csr', 'wb')
-            csr_file.write(entity_csr)
-            csr_file.close()  
-            
-            command = 'echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch \
-            -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 \
-            -in ' + common_name + '.csr -out /home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem'
+    while True:                 
+        connection, direcction = sock.accept()                     
+        entity_csr = connection.recv(2048)
+        request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
+        common_name = request.get_subject().commonName      
         
-            os.system(command) 
+        csr_file = open(common_name + '.csr', 'wb')
+        csr_file.write(entity_csr)
+        csr_file.close()  
+        
+        command = 'echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch \
+        -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 \
+        -in ' + common_name + '.csr -out /home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem'
 
-            crt_file = open(common_name + '.pem', 'wb')
-            entity_crt = crt_file.read()
-            #connection.sendall(file)      
-               
-            connection.close()        
-        except:
-            print("An exception occurred") 
+        os.system(command) 
+
+        #crt_file = open(common_name + '.pem', 'wb')
+        #entity_crt = crt_file.read()
+        connection.sendall('/home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem')      
+        
+        connection.close()        
+
 
 if __name__ == "__main__":
     main()
