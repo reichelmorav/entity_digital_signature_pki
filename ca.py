@@ -22,7 +22,7 @@ def generate_key(keypath):
     key_file.close()
     return key
 
-def generate_CRS(key, csrpath, entity):
+def generate_CRS(key, csrpath, entity, entity_email):
     req = crypto.X509Req()
     req.get_subject().C = C     
     req.get_subject().ST = ST
@@ -30,7 +30,7 @@ def generate_CRS(key, csrpath, entity):
     req.get_subject().O = O     
     req.get_subject().OU = OU
     req.get_subject().CN = entity.upper()
-    req.get_subject().emailAddress = entity + '@ucr.ac.cr'    
+    req.get_subject().emailAddress = entity_email    
     req.set_pubkey(key)
     req.sign(key, "sha512")        
    
@@ -52,11 +52,12 @@ def main():
             sock.connect((HOST, PORT))
             option = input("Bienvenido. \n 1. Generar certificado para unidad \n 2. Salir \n¿Cuál opción desea?: ")
             if(option == "1"):       
-                entity = input("Ingrese el nombre de la unidad: ")         
+                entity = input("Ingrese el nombre de la unidad: ")
+                entity_email = input("Ingrese el correo de la unidad: ")         
                 keypath = HOME + "/" + entity.replace(" ", "")  + '.key'
                 csrpath = HOME + "/" + entity.replace(" ", "")  + '.csr'
                 crtpath = HOME + "/" + entity.replace(" ", "")  + '.pem'               
-                generate_CRS(generate_key(keypath), csrpath, entity)
+                generate_CRS(generate_key(keypath), csrpath, entity, entity_email)
                 send_to_sign(csrpath)
                 crt_file = open(crtpath, 'wb')
                 crt_file.write(sock.recv(4096))                
