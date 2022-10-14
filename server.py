@@ -6,7 +6,7 @@ HOST = ''
 
 def main():    
     sock = socket.socket()      
-    sock .setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((HOST, PORT))
     sock.listen(4)   
 
