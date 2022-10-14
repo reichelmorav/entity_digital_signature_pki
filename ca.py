@@ -52,7 +52,7 @@ def main():
             sock.connect((HOST, PORT))
             option = input("Bienvenido. \n 1. Generar certificado para unidad \n 2. Salir \n¿Cuál opción desea?: ")
             if(option == "1"):       
-                entity = input("Ingrese el nombre de la unidad: ").strip()          
+                entity = input("Ingrese el nombre de la unidad: ").replace(" ", "")          
                 keypath = HOME + "/" + entity + '.key'
                 csrpath = HOME + "/" + entity + '.csr'
                 crtpath = HOME + "/" + entity + '.pem'               
