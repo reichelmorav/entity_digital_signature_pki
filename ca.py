@@ -3,7 +3,7 @@ from OpenSSL import crypto
 import os, socket
 
 PORT = 8800
-HOST = 'localhost'
+HOST = '192.168.133.133'
 TYPE_RSA = crypto.TYPE_RSA
 TYPE_DSA = crypto.TYPE_DSA
 HOME = os.getenv("HOME")
@@ -68,7 +68,8 @@ def main():
             else:
                 print("La opción seleccionada no es correcta. Intentelo de nuevo\n")
         except:
-            print("An exception occurred") 
+            print("An exception occurred")
+            break
 
 if __name__ == "__main__":
     main()
