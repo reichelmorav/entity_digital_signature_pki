@@ -23,7 +23,7 @@ def main():
             
             command = 'echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch \
             -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 \
-            -in' + common_name + '.csr -out /home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem'
+            -in ' + common_name + '.csr -out /home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem'
         
             os.system(command) 
 

@@ -55,7 +55,7 @@ def main():
                 entity = input("Ingrese el nombre de la unidad: ")          
                 keypath = HOME + "/" + entity + '.key'
                 csrpath = HOME + "/" + entity + '.csr'
-                crtpath = HOME + "/" + entity + '.crt'               
+                crtpath = HOME + "/" + entity + '.pem'               
                 generate_CRS(generate_key(keypath), csrpath, entity)
                 send_to_sign(csrpath)
                 print ("La llave privada se encuentra en: " + keypath)
