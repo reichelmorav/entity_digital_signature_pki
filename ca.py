@@ -1,6 +1,6 @@
 from OpenSSL import crypto
-import os
-import socket
+from termcolor import colored 
+import os, socket
 
 PORT = 8800
 HOST = 'localhost'
@@ -40,12 +40,12 @@ def generate_CRS(key, csrpath, entity):
 
 def send_to_sign(csrpath):
     file = open(csrpath, 'rb')
-    certificate = file.read(2048) 
-    sock.send(certificate)    
+    certificate = file.read() 
+    sock.sendall(certificate)    
     file.close()
 
 def main():
-    global sock    
+    global sock       
     while(True):    
         try:
             sock = socket.socket()
@@ -55,12 +55,12 @@ def main():
                 entity = input("Ingrese el nombre de la unidad: ")          
                 keypath = HOME + "/" + entity + '.key'
                 csrpath = HOME + "/" + entity + '.csr'
-                crtpath = HOME + "/" + entity + '.crt'
-                key = generate_key(keypath)
-                generate_CRS(key, csrpath, entity)
+                crtpath = HOME + "/" + entity + '.crt'               
+                generate_CRS(generate_key(keypath), csrpath, entity)
                 send_to_sign(csrpath)
-                print ("La llave privada se encuentra en:" + keypath)
-                print ("El CSR se encuentra en:" + csrpath)
+                print ("La llave privada se encuentra en: " + keypath)
+                print ("El CSR se encuentra en: " + csrpath)
+                print ("El certificado se encuentra en: " + crtpath)
                 sock.close()
                 break
             elif(option == "2"):            

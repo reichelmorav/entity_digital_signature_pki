@@ -1,7 +1,5 @@
-import socket
-import os 
-import subprocess
-from subprocess import Popen, PIPE
+import datetime, socket, os
+from OpenSSL import crypto
 
 PORT = 8800
 HOST = ''
@@ -13,16 +11,29 @@ def main():
     sock.listen(4)   
 
     while True:
-        connection, direction = sock.accept()                     
-        certificate = connection.recv(2048)       
+        try:
+            connection= sock.accept()                     
+            entity_csr = connection[0].recv(2048)
+            request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
+            common_name = request.get_subject().commonName      
+            
+            csr_file = open(common_name + '.csr', 'wb')
+            csr_file.write(entity_csr)
+            csr_file.close()  
+            
+            command = 'echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch \
+            -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 \
+            -in' + common_name + '.csr -out /home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem'
         
-        file = open('csr.csr', 'wb')
-        file.write(certificate)
-        file.close() 
-      
-        os.system('echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 -in csr.csr -out /home/reich/root/ca/issuing_ca/certs/prueba.pem')   
-       
-        connection.close()
+            os.system(command) 
+
+            crt_file = open(common_name + '.pem', 'wb')
+            entity_crt = crt_file.read()
+            #connection.sendall(file)      
+               
+            connection.close()        
+        except:
+            print("An exception occurred") 
 
 if __name__ == "__main__":
     main()
