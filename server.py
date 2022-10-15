@@ -23,7 +23,7 @@ def main():
         
         command = 'echo ecciadm | sudo -S openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -batch \
         -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:2728 \
-        -in ' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
+        -in ' + HOME + '/' + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
         os.system(command) 
 
         crt_file = open('/etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem', 'rb')         
