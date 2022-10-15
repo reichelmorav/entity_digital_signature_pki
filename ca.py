@@ -1,4 +1,3 @@
-from wsgiref import headers
 from OpenSSL import crypto
 from tabulate import tabulate
 import os, socket
@@ -31,7 +30,7 @@ def generate_CSR(key, csrpath, entity_name, entity_email):
     req.get_subject().O = O     
     req.get_subject().OU = OU
     req.get_subject().CN = entity_name.upper()
-    req.get_subject().emailAddress = entity_email    
+    req.get_subject().emailAddress = entity_email.upper()    
     req.set_pubkey(key)
     req.sign(key, "sha512")        
    
@@ -52,8 +51,12 @@ def send_to_sign(csr_path, crt_path):
 
 def create_pfx(key_path, crt_path, pfx_path):    
     entity_certificate = crypto.PKCS12()
-    entity_certificate.set_privatekey(crypto.load_privatekey(crypto.FILETYPE_PEM, open(key_path,'rt').read()))
-    entity_certificate.set_certificate(crypto.load_certificate(crypto.FILETYPE_PEM, open(crt_path,'rt').read()))   
+    key_file = open(key_path,'rt')
+    crt_file = open(crt_path,'rt')
+    entity_certificate.set_privatekey(crypto.load_privatekey(crypto.FILETYPE_PEM, key_file.read()))
+    entity_certificate.set_certificate(crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read()))
+    key_file.close()
+    crt_file.close()   
     open(pfx_path,'wb').write(entity_certificate.export()) 
 
 def main():
@@ -74,11 +77,11 @@ def main():
                 generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
                 send_to_sign(csr_path, crt_path)
                 create_pfx(key_path, crt_path, pfx_path)
-                print ("El certificado solicitado se encuentra en: " + pfx_path)                                
+                print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
             elif(option == "2"):            
                 break
             else:
-                print("La opción seleccionada no es correcta. Intentelo de nuevo\n")
+                print("La opción seleccionada no es correcta. Intentelo de nuevo.\n")
         except BaseException as exception:
             print("An exception occurred \n")
             break
