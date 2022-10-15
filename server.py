@@ -16,7 +16,7 @@ def main():
         entity_csr = crypto.load_certificate_request(crypto.FILETYPE_PEM, conn.recv(4096))  
         entity_name = entity_csr.get_subject().commonName.replace(" ", "")              
         
-        csr_file = open(HOME + entity_name + '.csr', 'wb')
+        csr_file = open(HOME + '/' + entity_name + '.csr', 'wb')
         csr_file.write(entity_csr)
         csr_file.close()  
         
