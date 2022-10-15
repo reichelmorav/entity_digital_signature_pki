@@ -52,8 +52,8 @@ def send_to_sign(csr_path, crt_path):
 
 def create_pfx(key_path, crt_path, pfx_path):    
     entity_certificate = crypto.PKCS12()
-    entity_certificate.set_privatekey(crypto.serialization.load_pem_private_key(key_path))
-    entity_certificate.set_certificate(crypto.x509.load_pem_x509_certificate(crt_path))    
+    entity_certificate.set_privatekey(crypto.load_privatekey(crypto.FILETYPE_PEM, open(key_path,'rt').read()))
+    entity_certificate.set_certificate(crypto.load_certificate(crypto.FILETYPE_PEM, open(crt_path,'rt').read()))   
     open(pfx_path,'wb').write(entity_certificate.export()) 
 
 def main():
@@ -80,7 +80,7 @@ def main():
             else:
                 print("La opción seleccionada no es correcta. Intentelo de nuevo\n")
         except BaseException as exception:
-            print("An exception occurred \n" + exception)
+            print("An exception occurred \n")
             break
 
 if __name__ == "__main__":    
