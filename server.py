@@ -3,34 +3,33 @@ from OpenSSL import crypto
 
 PORT = 9225
 HOST = ''
+HOME = os.getenv("HOME")
 
 def main():  
     sock = socket.socket()      
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((HOST, PORT))
-    sock.listen(4)       
+    sock.listen(2)       
 
     while True:                 
-        connection, direcction = sock.accept()                     
-        entity_csr = connection.recv(2048)
-        request = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
-        common_name = request.get_subject().commonName.replace(" ", "")              
+        conn, dir = sock.accept()       
+        entity_csr = crypto.load_certificate_request(crypto.FILETYPE_PEM, conn.recv(4096))  
+        entity_name = entity_csr.get_subject().commonName.replace(" ", "")              
         
-        csr_file = open(common_name + '.csr', 'wb')
+        csr_file = open(HOME + entity_name + '.csr', 'wb')
         csr_file.write(entity_csr)
         csr_file.close()  
         
-        command = 'echo 1234 | sudo -S openssl ca -config /home/reich/root/ca/issuing_ca/openssl.cnf -batch \
-        -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:1234 \
-        -in ' + common_name + '.csr -out /home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem'
-
+        command = 'echo ecciadm | sudo -S openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -batch \
+        -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:2728 \
+        -in ' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
         os.system(command) 
 
-        crt_file = open('/home/reich/root/ca/issuing_ca/certs/' + common_name + '.pem', 'rb')         
-        connection.sendall(crt_file.read())      
+        crt_file = open('/etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem', 'rb')         
+        conn.sendall(crt_file.read())      
         crt_file.close()
         
-        connection.close()        
+        conn.close()        
 
 
 if __name__ == "__main__":
