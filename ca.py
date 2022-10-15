@@ -52,8 +52,8 @@ def send_to_sign(csr_path, crt_path):
 
 def create_pfx(key_path, crt_path, pfx_path):    
     entity_certificate = crypto.PKCS12()
-    entity_certificate.set_privatekey(key_path)
-    entity_certificate.set_certificate(crt_path)    
+    entity_certificate.set_privatekey(crypto.serialization.load_pem_private_key(key_path))
+    entity_certificate.set_certificate(crypto.x509.load_pem_x509_certificate(crt_path))    
     open(pfx_path,'wb').write(entity_certificate.export()) 
 
 def main():
@@ -71,7 +71,7 @@ def main():
                 csr_path = HOME + "/" + entity + '.csr'
                 crt_path = HOME + "/" + entity + '.pem'
                 pfx_path = HOME + "/" + entity + '.pfx'               
-                generate_CSR(generate_key(key_path), csr_path, entity, entity_email)
+                generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
                 send_to_sign(csr_path, crt_path)
                 create_pfx(key_path, crt_path, pfx_path)
                 print ("El certificado solicitado se encuentra en: " + pfx_path)                                
