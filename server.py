@@ -13,11 +13,12 @@ def main():
 
     while True:                 
         conn, dir = sock.accept()       
-        entity_csr = crypto.load_certificate_request(crypto.FILETYPE_PEM, conn.recv(4096))  
+        certificate = conn.recv(4096)
+        entity_csr = crypto.load_certificate_request(crypto.FILETYPE_PEM, certificate)  
         entity_name = entity_csr.get_subject().commonName.replace(" ", "")              
         
         csr_file = open(HOME + '/' + entity_name + '.csr', 'wb')
-        csr_file.write(entity_csr)
+        csr_file.write(certificate)
         csr_file.close()  
         
         command = 'echo ecciadm | sudo -S openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -batch \
