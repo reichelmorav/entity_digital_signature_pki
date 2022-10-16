@@ -1,7 +1,7 @@
 from asyncio.log import logger
 from OpenSSL import crypto
 from tabulate import tabulate
-import os, socket
+import os, socket, secrets, string
 
 PORT = 9225
 HOST = '172.16.202.27'
@@ -50,7 +50,12 @@ def send_to_sign(csr_path, crt_path):
         crt_file.write(sock.recv(4096))
         sock.close()        
 
-def create_PKCS12(key_path, crt_path, pfx_path):    
+def generate_password():
+    alphabet = string.ascii_letters + string.digits
+    password = ''.join(secrets.choice(alphabet) for i in range(20))
+    return password
+
+def create_PKCS12(key_path, crt_path, pfx_path, password):    
     entity_certificate = crypto.PKCS12()
     key_file = open(key_path,'rt')
     crt_file = open(crt_path,'rt')
@@ -59,7 +64,7 @@ def create_PKCS12(key_path, crt_path, pfx_path):
     key_file.close()
     crt_file.close() 
     pfx_file = open(pfx_path,'wb')
-    pfx_file.write(entity_certificate.export()) 
+    pfx_file.write(entity_certificate.export(password)) 
 
 def main():       
     while(True):    
@@ -72,7 +77,7 @@ def main():
                 entity_name = input("Nombre: ")
                 entity = entity_name.replace(" ", "").lower()                 
                 if(os.path.exists(ENTITIES_PATH + entity)):
-                  print('Lo lamentamos, ya existe un certificado para su entidad.')   
+                  print('Lo lamentamos, ya existe un certificado para su entidad.\n')   
                 else:                         
                     entity_email = input("Correo: ")                               
                     os.mkdir(ENTITIES_PATH + entity)
@@ -83,14 +88,15 @@ def main():
                     pfx_path = '/home/certificates/' + entity + '.pfx'               
                     generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
                     send_to_sign(csr_path, crt_path)
-                    create_PKCS12(key_path, crt_path, pfx_path)
-                    print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
+                    entity_password = generate_password()
+                    create_PKCS12(key_path, crt_path, pfx_path, entity_password)
+                    print ("El certificado solicitado se encuentra en: " + pfx_path + 'y su contraseña para acceder a él es: ' + entity_password)                                
             elif(option == "2"):            
                 break
             else:
                 print("La opción seleccionada no es correcta. Intentelo de nuevo.\n")
         except BaseException as exception:
-            logger.error('Failed to upload to ftp: '+ str(exception))
+            logger.error('Sorry, there is an exception: '+ str(exception))
             break
 
 if __name__ == "__main__":    
