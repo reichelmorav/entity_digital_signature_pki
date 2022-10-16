@@ -72,10 +72,11 @@ def main():
             entity = entity_name.replace(" ", "")
             entity_path = ENTITIES_PATH + entity
             os.mkdir(entity_path)
-            key_path = entity_path + '.key'
-            csr_path = entity_path + '.csr'
-            crt_path = entity_path + '.pem'
-            pfx_path = entity_path + '.pfx'               
+            file_path = entity_path + '/' + entity 
+            key_path = file_path + '.key'
+            csr_path = file_path + '.csr'
+            crt_path = file_path + '.pem'
+            pfx_path = file_path +  '.pfx'               
             generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
             send_to_sign(csr_path, crt_path)
             create_PKCS12(key_path, crt_path, pfx_path)
