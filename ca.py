@@ -71,7 +71,7 @@ def main():
                 print('Por favor, proporcione los siguientes datos de la unidad:') 
                 entity_name = input("Nombre: ")
                 entity = entity_name.replace(" ", "").lower()                 
-                if(os.path(ENTITIES_PATH + entity)):
+                if(os.path.exists(ENTITIES_PATH + entity)):
                   print('Lo lamentamos, ya existe un certificado para su entidad.')   
                 else:                         
                     entity_email = input("Correo: ")                               
