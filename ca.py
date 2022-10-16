@@ -79,7 +79,7 @@ def main():
                 if(os.path.exists(ENTITIES_PATH + entity)):
                   print('Lo lamentamos, ya existe un certificado para su entidad.\n')   
                 else:                         
-                    entity_email = input("  Correo: ")                               
+                    entity_email = input("   Correo: ")                               
                     os.mkdir(ENTITIES_PATH + entity)
                     file_path = ENTITIES_PATH + entity + '/' + entity 
                     key_path = file_path + '.key'
