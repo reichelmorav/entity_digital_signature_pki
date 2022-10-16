@@ -15,15 +15,15 @@ L = "San Pedro"
 O = "UCR ECCI ITI"
 OU = "II 2022"
 
-def generate_key(keypath):
+def generate_key(key_path):
     key = crypto.PKey()
     key.generate_key(TYPE_RSA, 4096)
-    key_file = open(keypath, "wb")
+    key_file = open(key_path, "wb")
     key_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key))
     key_file.close()
     return key
 
-def generate_CSR(key, csrpath, entity_name, entity_email):
+def generate_CSR(key, csr_path, entity_name, entity_email):
     req = crypto.X509Req()
     req.get_subject().C = C     
     req.get_subject().ST = ST
@@ -35,7 +35,7 @@ def generate_CSR(key, csrpath, entity_name, entity_email):
     req.set_pubkey(key)
     req.sign(key, "sha512")        
    
-    ca_file = open(csrpath, 'wb')
+    ca_file = open(csr_path, 'wb')
     ca_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM, req))
     ca_file.close()  
 
