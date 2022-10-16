@@ -2,7 +2,7 @@ from asyncio.log import logger
 from OpenSSL import crypto
 from tabulate import tabulate
 from termcolor import colored
-import os, socket, secrets, string
+import os, socket, secrets, string, shutil
 
 PORT = 9225
 HOST = '172.16.202.27'
@@ -53,7 +53,7 @@ def send_to_sign(csr_path, crt_path):
 
 def generate_password():
     alphabet = string.ascii_letters + string.digits
-    password = ''.join(secrets.choice(alphabet) for i in range(20))
+    password = ''.join(secrets.choice(alphabet) for i in range(10))
     return password
 
 def create_PKCS12(key_path, crt_path, pfx_path, password):    
@@ -66,7 +66,7 @@ def create_PKCS12(key_path, crt_path, pfx_path, password):
     crt_file.close() 
     pfx_file = open(pfx_path,'wb')
     pfx_file.write(entity_certificate.export(password.encode())) 
-    pfx_file.close()
+    pfx_file.close()    
 
 def main():       
     while(True):    
@@ -87,13 +87,15 @@ def main():
                     key_path = file_path + '.key'
                     csr_path = file_path + '.csr'
                     crt_path = file_path + '.pem'
-                    pfx_path = '/home/certificates/' + entity + '.pfx'               
+                    pfx_path = file_path + '.pfx'                              
                     generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
                     send_to_sign(csr_path, crt_path)
+                    entity_crt_path = '/home/certificates/' + entity + '.pfx'
                     entity_password = generate_password()
                     create_PKCS12(key_path, crt_path, pfx_path, entity_password)
-                    print ("El certificado solicitado se encuentra en: " + colored(pfx_path, 'green', attrs=['bold'])  +  
-                        '. La contraseña para acceder es: ' + colored(entity_password, 'green', attrs=['bold']))                                
+                    shutil.copy2(pfx_path, entity_crt_path)
+                    print ("El certificado solicitado se encuentra en: " + colored(entity_crt_path, 'green', attrs=['bold'])  +  
+                        '. La contraseña para acceder es: ' + colored(entity_password, 'green', attrs=['bold']) + '\n')                                
             elif(option == "2"):            
                 break
             else:
