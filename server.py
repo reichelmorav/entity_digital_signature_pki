@@ -6,14 +6,14 @@ HOST = ''
 HOME = os.getenv("HOME")
 
 def save_csr(csr, entity_name):
-    csr_file = open(HOME + '/' + entity_name + '.csr', 'wb')
+    csr_file = open('/etc/pki/ca/issuing_ca/csr/' + entity_name + '.csr', 'wb')
     csr_file.write(csr)
     csr_file.close()    
 
 def sign_csr(entity_name):
     command = 'echo ecciadm | sudo -S openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -batch \
         -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:2728 \
-        -in ' + HOME + '/' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
+        -in etc/pki/ca/issuing_ca/csr/' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
     os.system(command) 
 
 def main():      

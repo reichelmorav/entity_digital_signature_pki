@@ -74,12 +74,12 @@ def main():
             option = input("Ingrese el número de la opción deseada: ")
             if(option == "1"):      
                 print('Por favor, proporcione los siguientes datos de la unidad:') 
-                entity_name = input("Nombre: ")
+                entity_name = input("   Nombre: ")
                 entity = entity_name.replace(" ", "").lower()                 
                 if(os.path.exists(ENTITIES_PATH + entity)):
                   print('Lo lamentamos, ya existe un certificado para su entidad.\n')   
                 else:                         
-                    entity_email = input("Correo: ")                               
+                    entity_email = input("  Correo: ")                               
                     os.mkdir(ENTITIES_PATH + entity)
                     file_path = ENTITIES_PATH + entity + '/' + entity 
                     key_path = file_path + '.key'
