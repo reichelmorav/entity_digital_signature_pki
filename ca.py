@@ -67,9 +67,10 @@ def main():
             table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE ENTIDADES DE LA UCR'], ['1. Generar certificado para unidad'], ['2. Salir']]
             print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
             option = input("Ingrese el número de la opción deseada: ")
-            if(option == "1"):       
-                entity_name = input("Ingrese el nombre: ")
-                entity_email = input("Ingrese el correo: ")
+            if(option == "1"):      
+                print('Por favor, proporcione los siguientes datos de la unidad: \n') 
+                entity_name = input("Nombre: ")
+                entity_email = input("Correo: ")
                 entity = entity_name.replace(" ", "").lower()            
                 os.mkdir(ENTITIES_PATH + entity)
                 file_path = ENTITIES_PATH + entity + '/' + entity 
