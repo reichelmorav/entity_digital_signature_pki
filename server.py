@@ -10,7 +10,7 @@ def save_csr(csr, entity_name):
     csr_file.write(csr)
     csr_file.close()    
 
-def sign_crs(entity_name):
+def sign_csr(entity_name):
     command = 'echo ecciadm | sudo -S openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -batch \
         -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:2728 \
         -in ' + HOME + '/' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
@@ -29,7 +29,7 @@ def main():
         csr = crypto.load_certificate_request(crypto.FILETYPE_PEM, entity_csr)  
         entity_name = csr.get_subject().commonName.replace(" ", "")       
         save_csr(entity_csr, entity_name)
-        sign_crs(entity_name)      
+        sign_csr(entity_name)      
 
         crt_file = open('/etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem', 'rb')         
         conn.sendall(crt_file.read())      
