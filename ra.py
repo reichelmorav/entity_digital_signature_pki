@@ -25,27 +25,27 @@ def generate_key(key_path):
     return key
 
 def generate_CSR(key, csr_path, entity_name, entity_email):
-    req = crypto.X509Req()
-    req.get_subject().C = C     
-    req.get_subject().ST = ST
-    req.get_subject().L = L
-    req.get_subject().O = O     
-    req.get_subject().OU = OU
-    req.get_subject().CN = entity_name.upper()
-    req.get_subject().emailAddress = entity_email.upper()    
-    req.set_pubkey(key)
-    req.sign(key, "sha512")        
+    csr = crypto.X509Req()
+    csr.get_subject().C = C     
+    csr.get_subject().ST = ST
+    csr.get_subject().L = L
+    csr.get_subject().O = O     
+    csr.get_subject().OU = OU
+    csr.get_subject().CN = entity_name.upper()
+    csr.get_subject().emailAddress = entity_email.upper()    
+    csr.set_pubkey(key)
+    csr.sign(key, "sha512")        
    
-    ca_file = open(csr_path, 'wb')
-    ca_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM, req))
-    ca_file.close()  
+    csr_file = open(csr_path, 'wb')
+    csr_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM, csr))
+    csr_file.close()  
 
 def send_to_sign(csr_path, crt_path):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.connect((HOST, PORT))   
         csr_file = open(csr_path, 'rb')
-        certificate = csr_file.read() 
-        sock.sendall(certificate)    
+        csr = csr_file.read() 
+        sock.sendall(csr)    
         csr_file.close()
         crt_file = open(crt_path, 'wb')
         crt_file.write(sock.recv(4096))
