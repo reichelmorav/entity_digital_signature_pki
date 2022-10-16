@@ -75,12 +75,12 @@ def main():
             option = input("Ingrese el número de la opción deseada: ")
             if(option == "1"):      
                 print('Por favor, proporcione los siguientes datos de la entidad:') 
-                entity_name = input("   	\033[1;32m Nombre: \033[00m ")
+                entity_name = input("   \033[1;32m Nombre: \033[00m ")
                 entity = entity_name.replace(" ", "").lower()                 
                 if(os.path.exists(ENTITIES_PATH + entity)):
                   print('Lo lamentamos, ya existe un certificado para su entidad.\n')   
                 else:                         
-                    entity_email = input("   Correo: ")                               
+                    entity_email = input("   \033[1;32m Correo: \033[00m ")                              
                     os.mkdir(ENTITIES_PATH + entity)
                     file_path = ENTITIES_PATH + entity + '/' + entity 
                     key_path = file_path + '.key'
@@ -91,8 +91,8 @@ def main():
                     send_to_sign(csr_path, crt_path)
                     entity_password = generate_password()
                     create_PKCS12(key_path, crt_path, pfx_path, entity_password)
-                    print ("El certificado solicitado se encuentra en: " + pfx_path +  
-                        ' La contraseña para acceder a él es: ' + entity_password)                                
+                    print ("El certificado solicitado se encuentra en: \033[1;32m" + pfx_path +  
+                        '\033[00m .La contraseña para acceder a él es: \033[1;32m' + entity_password + '\033[00m \n')                                
             elif(option == "2"):            
                 break
             else:
