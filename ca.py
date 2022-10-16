@@ -65,16 +65,17 @@ def create_PKCS12(key_path, crt_path, pfx_path, password):
     crt_file.close() 
     pfx_file = open(pfx_path,'wb')
     pfx_file.write(entity_certificate.export(password.encode())) 
+    pfx_file.close()
 
 def main():       
     while(True):    
         try:                  
-            table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE ENTIDADES DE LA UCR'], ['1. Generar certificado para unidad'], ['2. Salir']]
+            table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE ENTIDADES DE LA UCR'], ['1. Generar certificado'], ['2. Salir']]
             print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
             option = input("Ingrese el número de la opción deseada: ")
             if(option == "1"):      
-                print('Por favor, proporcione los siguientes datos de la unidad:') 
-                entity_name = input("   Nombre: ")
+                print('Por favor, proporcione los siguientes datos de la entidad:') 
+                entity_name = input("   	\033[1;32m Nombre: \033[00m ")
                 entity = entity_name.replace(" ", "").lower()                 
                 if(os.path.exists(ENTITIES_PATH + entity)):
                   print('Lo lamentamos, ya existe un certificado para su entidad.\n')   
