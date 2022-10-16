@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from OpenSSL import crypto
 from tabulate import tabulate
 import os, socket
@@ -58,37 +59,35 @@ def create_PKCS12(key_path, crt_path, pfx_path):
     key_file.close()
     crt_file.close() 
     pfx_file = open(pfx_path,'wb')
-    pfx_file.write(entity_certificate.export()) 
+    pfx_file.write(entity_certificate.export('1234')) 
 
 def main():       
     while(True):    
-        # try:                  
-        table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE ENTIDADES DE LA UCR'], ['1. Generar certificado para unidad'], ['2. Salir']]
-        print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
-        option = input("Ingrese el número de la opción deseada: ")
-        if(option == "1"):       
-            entity_name = input("Ingrese el nombre: ")
-            entity_email = input("Ingrese el correo: ")
-            entity = entity_name.replace(" ", "")
-            entity_path = ENTITIES_PATH + entity
-            os.mkdir(entity_path)
-            file_path = entity_path + '/' + entity 
-            key_path = file_path + '.key'
-            csr_path = file_path + '.csr'
-            crt_path = file_path + '.pem'
-            pfx_path = file_path +  '.pfx'               
-            generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
-            send_to_sign(csr_path, crt_path)
-            create_PKCS12(key_path, crt_path, pfx_path)
-            print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
-        elif(option == "2"):            
+        try:                  
+            table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE ENTIDADES DE LA UCR'], ['1. Generar certificado para unidad'], ['2. Salir']]
+            print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
+            option = input("Ingrese el número de la opción deseada: ")
+            if(option == "1"):       
+                entity_name = input("Ingrese el nombre: ")
+                entity_email = input("Ingrese el correo: ")
+                entity = entity_name.replace(" ", "").lower()            
+                os.mkdir(ENTITIES_PATH + entity)
+                file_path = ENTITIES_PATH + entity + '/' + entity 
+                key_path = file_path + '.key'
+                csr_path = file_path + '.csr'
+                crt_path = file_path + '.pem'
+                pfx_path = '/home/certificates/' + entity + '.pfx'               
+                generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
+                send_to_sign(csr_path, crt_path)
+                create_PKCS12(key_path, crt_path, pfx_path)
+                print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
+            elif(option == "2"):            
+                break
+            else:
+                print("La opción seleccionada no es correcta. Intentelo de nuevo.\n")
+        except BaseException as exception:
+            logger.error('Failed to upload to ftp: '+ str(exception))
             break
-        else:
-            print("La opción seleccionada no es correcta. Intentelo de nuevo.\n")
-        # except BaseException as exception:
-        #     print("An exception occurred \n")
-        #     print(exception)
-        #     break
 
 if __name__ == "__main__":    
     main()
