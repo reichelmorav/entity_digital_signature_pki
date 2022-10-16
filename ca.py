@@ -6,7 +6,7 @@ PORT = 9225
 HOST = '172.16.202.27'
 TYPE_RSA = crypto.TYPE_RSA
 TYPE_DSA = crypto.TYPE_DSA
-HOME = os.getenv("HOME")
+ENTITIES_PATH = '/etc/pki/entities_issued/'
 
 C = "CR"
 ST = "San Jose"
@@ -49,34 +49,36 @@ def send_to_sign(csr_path, crt_path):
         crt_file.write(sock.recv(4096))
         sock.close()        
 
-def create_pfx(key_path, crt_path, pfx_path):    
+def create_PKCS12(key_path, crt_path, pfx_path):    
     entity_certificate = crypto.PKCS12()
     key_file = open(key_path,'rt')
     crt_file = open(crt_path,'rt')
     entity_certificate.set_privatekey(crypto.load_privatekey(crypto.FILETYPE_PEM, key_file.read()))
     entity_certificate.set_certificate(crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read()))
     key_file.close()
-    crt_file.close()   
-    open(pfx_path,'wb').write(entity_certificate.export()) 
+    crt_file.close() 
+    pfx_file = open(pfx_path,'wb')
+    pfx_file.write(entity_certificate.export()) 
 
-def main():
-    global sock   
+def main():       
     while(True):    
         try:                  
-            table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE LA UCR'], ['1. Generar certificado para unidad'], ['2. Salir']]
+            table = [['BIENVENIDO(A) A LA AUTORIDAD DE REGISTRO DE ENTIDADES DE LA UCR'], ['1. Generar certificado para unidad'], ['2. Salir']]
             print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
             option = input("Ingrese el número de la opción deseada: ")
             if(option == "1"):       
-                entity_name = input("Ingrese el nombre de la unidad: ")
-                entity_email = input("Ingrese el correo de la unidad: ")
+                entity_name = input("Ingrese el nombre: ")
+                entity_email = input("Ingrese el correo: ")
                 entity = entity_name.replace(" ", "")
-                key_path = HOME + "/" + entity + '.key'
-                csr_path = HOME + "/" + entity + '.csr'
-                crt_path = HOME + "/" + entity + '.pem'
-                pfx_path = HOME + "/" + entity + '.pfx'               
+                entity_path = ENTITIES_PATH + entity
+                os.mkdir(entity_path)
+                key_path = entity_path + '.key'
+                csr_path = entity_path + '.csr'
+                crt_path = entity_path + '.pem'
+                pfx_path = entity_path + '.pfx'               
                 generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
                 send_to_sign(csr_path, crt_path)
-                create_pfx(key_path, crt_path, pfx_path)
+                create_PKCS12(key_path, crt_path, pfx_path)
                 print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
             elif(option == "2"):            
                 break
