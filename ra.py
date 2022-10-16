@@ -87,7 +87,8 @@ def main():
                     key_path = file_path + '.key'
                     csr_path = file_path + '.csr'
                     crt_path = file_path + '.pem'
-                    pfx_path = file_path + '.pfx'                              
+                    pfx_path = file_path + '.pfx'
+                    print('Nos encontramos procesando su solicitud, espere un momento por favor...')                                                  
                     generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
                     send_to_sign(csr_path, crt_path)
                     entity_crt_path = '/home/certificates/' + entity + '.pfx'

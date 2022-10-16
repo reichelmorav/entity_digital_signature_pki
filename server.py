@@ -1,5 +1,5 @@
+import socket, os
 from asyncio.log import logger
-import datetime, socket, os
 from OpenSSL import crypto
 
 PORT = 9225
