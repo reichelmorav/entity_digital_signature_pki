@@ -13,7 +13,7 @@ def save_csr(csr, entity_name):
 def sign_csr(entity_name):
     command = 'echo ecciadm | sudo -S openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -batch \
         -engine pkcs11 -keyform engine -keyfile 02 -extensions v3_ca -days 365 -notext -md sha256 -passin pass:2728 \
-        -in etc/pki/ca/issuing_ca/csr/' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
+        -in /etc/pki/ca/issuing_ca/csr/' + entity_name + '.csr -out /etc/pki/ca/issuing_ca/certs/' + entity_name + '.pem'
     os.system(command) 
 
 def main():      
