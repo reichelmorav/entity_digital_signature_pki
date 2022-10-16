@@ -59,7 +59,7 @@ def create_PKCS12(key_path, crt_path, pfx_path):
     key_file.close()
     crt_file.close() 
     pfx_file = open(pfx_path,'wb')
-    pfx_file.write(entity_certificate.export('1234')) 
+    pfx_file.write(entity_certificate.export()) 
 
 def main():       
     while(True):    
@@ -70,18 +70,21 @@ def main():
             if(option == "1"):      
                 print('Por favor, proporcione los siguientes datos de la unidad:') 
                 entity_name = input("Nombre: ")
-                entity_email = input("Correo: ")
-                entity = entity_name.replace(" ", "").lower()            
-                os.mkdir(ENTITIES_PATH + entity)
-                file_path = ENTITIES_PATH + entity + '/' + entity 
-                key_path = file_path + '.key'
-                csr_path = file_path + '.csr'
-                crt_path = file_path + '.pem'
-                pfx_path = '/home/certificates/' + entity + '.pfx'               
-                generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
-                send_to_sign(csr_path, crt_path)
-                create_PKCS12(key_path, crt_path, pfx_path)
-                print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
+                entity = entity_name.replace(" ", "").lower()                 
+                if(os.path(ENTITIES_PATH + entity)):
+                  print('Lo lamentamos, ya existe un certificado para su entidad.')   
+                else:                         
+                    entity_email = input("Correo: ")                               
+                    os.mkdir(ENTITIES_PATH + entity)
+                    file_path = ENTITIES_PATH + entity + '/' + entity 
+                    key_path = file_path + '.key'
+                    csr_path = file_path + '.csr'
+                    crt_path = file_path + '.pem'
+                    pfx_path = '/home/certificates/' + entity + '.pfx'               
+                    generate_CSR(generate_key(key_path), csr_path, entity_name, entity_email)
+                    send_to_sign(csr_path, crt_path)
+                    create_PKCS12(key_path, crt_path, pfx_path)
+                    print ("El certificado solicitado se encuentra en: " + pfx_path + '\n')                                
             elif(option == "2"):            
                 break
             else:
