@@ -68,7 +68,7 @@ def main():
             print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
             option = input("Ingrese el número de la opción deseada: ")
             if(option == "1"):      
-                print('Por favor, proporcione los siguientes datos de la unidad: \n') 
+                print('Por favor, proporcione los siguientes datos de la unidad:') 
                 entity_name = input("Nombre: ")
                 entity_email = input("Correo: ")
                 entity = entity_name.replace(" ", "").lower()            
