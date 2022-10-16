@@ -64,7 +64,7 @@ def create_PKCS12(key_path, crt_path, pfx_path, password):
     key_file.close()
     crt_file.close() 
     pfx_file = open(pfx_path,'wb')
-    pfx_file.write(entity_certificate.export(password)) 
+    pfx_file.write(entity_certificate.export(password.encode())) 
 
 def main():       
     while(True):    
@@ -90,7 +90,8 @@ def main():
                     send_to_sign(csr_path, crt_path)
                     entity_password = generate_password()
                     create_PKCS12(key_path, crt_path, pfx_path, entity_password)
-                    print ("El certificado solicitado se encuentra en: " + pfx_path + 'y su contraseña para acceder a él es: ' + entity_password)                                
+                    print ("El certificado solicitado se encuentra en: " + pfx_path +  
+                        ' La contraseña para acceder a él es: ' + entity_password)                                
             elif(option == "2"):            
                 break
             else:
