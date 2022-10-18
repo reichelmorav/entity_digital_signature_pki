@@ -6,4 +6,5 @@ with open(sys.argv[1], 'rb') as f:
 
 context = ValidationContext(allow_fetching=True)
 validator = CertificateValidator(end_entity_cert, validation_context=context)
+print(validator)
 
