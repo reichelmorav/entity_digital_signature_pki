@@ -9,7 +9,7 @@ import sys
 
 def get_ocsp_server(cert1):
     f = open(cert1, 'rb')
-    cert2 = x509.load_pem_x509_certificate(f, default_backend())
+    cert2 = x509.load_pem_x509_certificate(f.read(), default_backend())
     aia = cert2.extensions.get_extension_for_oid(ExtensionOID.AUTHORITY_INFORMATION_ACCESS).value
     print(aia)
     ocsps = [ia for ia in aia if ia.access_method == AuthorityInformationAccessOID.OCSP]
