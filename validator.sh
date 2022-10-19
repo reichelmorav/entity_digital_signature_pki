@@ -1,6 +1,10 @@
 #!/bin/bash
 
+sudo -s
+
 crl_URL = "$(openssl asn1parse -in $1 | 
 grep -A 1 'X509v3 CRL Distribution Points' | tail -1 | cut -d: -f 4 | cut -b21)"
 
 echo "$crl_URL"
+
+wget -P /etc/pki/crls/ "$crl_URL"
