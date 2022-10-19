@@ -7,6 +7,6 @@ wget -P /etc/pki/crls/ "$crl_URL"
 
 openssl crl -in /etc/pki/crls/ca_intermediate_entities_issuing.crl -outform DER -out /etc/pki/crls/issuing.crl
 
-openssl crl -in ssca-sha2-g6.crl -inform DER -text -noout | grep "$cert_serial"
+openssl crl -in /etc/pki/crls/issuing.crl -inform DER -text -noout | grep "$cert_serial"
 
 
