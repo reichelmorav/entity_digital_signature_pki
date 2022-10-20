@@ -8,4 +8,4 @@ openssl crl -in /etc/pki/crls/ca_intermediate_entities_issuing.crl -outform DER 
 
 status="$(openssl crl -in /etc/pki/crls/issuing.crl -inform DER -text -noout | grep "$cert_serial")
 
-if [ -z "status" ]; then echo "NULL"; else echo "Not NULL"; fi
+if [ -z "$status" ]; then echo "NULL"; else echo "Not NULL"; fi
