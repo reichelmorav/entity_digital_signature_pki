@@ -8,8 +8,8 @@ wget -P /etc/pki/crls/ "$crl_URL"
 
 openssl crl -in /etc/pki/crls/ca_intermediate_entities_issuing.crl -outform DER -out /etc/pki/crls/issuing.crl
 
-status="$(openssl crl -in /etc/pki/crls/issuing.crl -inform DER -text -noout | grep "$cert_serial")
+# status="$(openssl crl -in /etc/pki/crls/issuing.crl -inform DER -text -noout | grep "$cert_serial")
 
-echo "$status"
+# echo "$status"
 
-#if [ -z "$status" ]; then echo "NULL"; else echo "Not NULL"; fi
+# #if [ -z "$status" ]; then echo "NULL"; else echo "Not NULL"; fi
