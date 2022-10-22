@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/sudo bash
 
 crl_date="$(openssl crl -in /etc/pki/ca/issuing_ca/crl/ca_intermediate_entities_issuing.crl -noout -nextupdate | cut -d'=' -f2)"
 crl_date_f="$(date -d "$crl_date" -u)"
