@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/sudo bash
 
 openssl ca -config /etc/pki/ca/issuing_ca/openssl.cnf -engine pkcs11 -keyform engine -keyfile 02 -revoke $1
 rm /etc/pki/crl/ca_intermediate_entities_issuing.crl
