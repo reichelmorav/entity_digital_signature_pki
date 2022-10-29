@@ -2,7 +2,6 @@ import base64
 import ssl
 import requests
 from urllib.parse import urljoin
-
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
@@ -74,3 +73,6 @@ def get_cert_status_for_host(hostname, port):
     ocsp_server = get_ocsp_server(cert)
     print('   ocsp_server ->', ocsp_server)
     return get_ocsp_cert_status(ocsp_server, cert, issuer_cert)
+
+status = get_cert_status_for_host('software7.com', 443)
+print('software7.com:', status, '\n')
