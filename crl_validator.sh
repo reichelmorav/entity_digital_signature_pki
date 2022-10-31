@@ -12,5 +12,5 @@ else
 
     status="$(openssl crl -in /etc/pki/crls/issuing.crl -inform DER -text -noout | grep "$cert_serial")"
 
-    if [ -z "$status" ]; then echo "Good"; else echo "Revoked"
+    if [ -z "$status" ]; then echo "Good"; else echo "Revoked"; fi
 fi
