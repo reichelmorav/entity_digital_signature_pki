@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -z $1 ]; 
+if [ -z $1 ]
 then 
     echo "Debe especificar la ruta del certificado"; 
 else 
@@ -12,7 +12,7 @@ else
 
     status="$(openssl crl -in /etc/pki/crls/issuing.crl -inform DER -text -noout | grep "$cert_serial")"
 
-    if [ -z "$status" ]; then echo "Good"; else echo "Revoked"; fi
+    if [ -z "$status" ]; then echo "Good"; else echo "Revoked"; 
 fi
 
 
