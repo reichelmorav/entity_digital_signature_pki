@@ -1,21 +1,33 @@
 from asyncio.log import logger
+import os
 from tabulate import tabulate
 from termcolor import colored
 from OpenSSL import crypto
 
+def set_time_stamp(file_path, tsr_path, tsq_path ):
+    command = "./time_stamp.sh " + file_path + " " + tsr_path + " " + tsq_path
+    os.system(command)    
+
 def verify_cert_ocsp():
     pass
 
-def sign_file(file_path, private_key):
+def sign_file(file_path, key_path, signature_path):    
+    key_file = open(key_path, "rb")
+    key = crypto.load_privatekey(crypto.FILETYPE_PEM, key_file.read())
     file = open(file_path, 'r')
-    sign = crypto.sign(private_key, file.read(), "sha512")
-    return sign
+    sign = crypto.sign(key, file.read(), "sha512")
 
-def verify_sign(cert_path, signature_path, file_path):
-    cert = cert_path
-    signature = signature_path
+    sign_file = open(signature_path, 'wb')
+    sign_file.write(sign)
+    sign_file.close()     
+
+def verify_sign(cert_path, signature_path, file_path):    
+    cert_file = open(cert_path, "rb")
+    cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert_file.read())    
+    sign_file = open(signature_path, 'rb')
+    sign = sign_file.read()
     file = open(file_path, 'r')
-    crypto.verify(cert, signature, file.read(), "sha512")    
+    crypto.verify(cert, sign, file.read(), "sha512")    
 
 def main():       
     while(True):    
