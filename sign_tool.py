@@ -24,12 +24,18 @@ def sign_file(folder_path, file_name, key_name):
 
     set_time_stamp(file_to_sign, file_to_sign + '.tsr', file_to_sign + '.tsq')
 
-def verify_sign(folder_path, cert_name, signature_name, file_name):    
+def verify_sign(folder_path, cert_name, signature_name, file_name):   
+    print("Hola 1") 
     cert_file = open(folder_path + cert_name, "rb")
+    print("Hola 2") 
     cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert_file.read())    
+    print("Hola 3") 
     sign_file = open(folder_path + signature_name, 'rb')
+    print("Hola 4") 
     sign = sign_file.read()
+    print("Hola 5") 
     file = open(folder_path + file_name, 'r')
+    print("Hola 6") 
     crypto.verify(cert, sign, file.read(), "sha512")    
 
 def main():       
