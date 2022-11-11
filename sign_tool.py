@@ -24,12 +24,12 @@ def sign_file(folder_path, file_name, key_name):
 
     set_time_stamp(file_to_sign, file_to_sign + '.tsr', file_to_sign + '.tsq')
 
-def verify_sign(cert_path, signature_path, file_path):    
-    cert_file = open(cert_path, "rb")
+def verify_sign(folder_path, cert_name, signature_name, file_name):    
+    cert_file = open(folder_path + cert_name, "rb")
     cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert_file.read())    
-    sign_file = open(signature_path, 'rb')
+    sign_file = open(folder_path + signature_name, 'rb')
     sign = sign_file.read()
-    file = open(file_path, 'r')
+    file = open(folder_path + file_name, 'r')
     crypto.verify(cert, sign, file.read(), "sha512")    
 
 def main():       
@@ -46,9 +46,11 @@ def main():
                 sign_file(folder_path, file_name, key_name)                               
             elif(option == "2"):        
                 print('Por favor, proporcione los siguientes datos:')  
-                cert_path = input(colored( '  Ubicación de su certificado digital: ', 'green', attrs=['bold'])) 
-                sign_path = input(colored( '  Ubicación de la firma digital: ', 'green', attrs=['bold'])) 
-                file_path = input(colored( '  Ubicación del archivo: ', 'green', attrs=['bold']))        
+                folder_path = input(colored( '  Ruta de la carpeta de archivos: ', 'green', attrs=['bold']))                
+                cert_name = input(colored( '  Nombre de su certificado digital: ', 'green', attrs=['bold'])) 
+                sign_name = input(colored( '  Nombre la firma digital: ', 'green', attrs=['bold'])) 
+                file_name = input(colored( '  Nombre del archivo: ', 'green', attrs=['bold']))        
+                verify_sign(folder_path, cert_name, sign_name, file_name)
             elif(option == "3"):            
                 break
             else:
