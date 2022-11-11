@@ -15,7 +15,7 @@ def sign_file(file_path, key_path, signature_path):
     key_file = open(key_path, "rb")
     key = crypto.load_privatekey(crypto.FILETYPE_PEM, key_file.read())
     file = open(file_path, 'r')
-    sign = crypto.sign(key, file.read(), "sha512")
+    sign = crypto.sign(key, file.read().encode(), "sha512")
 
     sign_file = open(signature_path, 'wb')
     sign_file.write(sign)
@@ -39,7 +39,7 @@ def main():
                 print('Por favor, proporcione los siguientes datos:')  
                 file_path = input(colored( '  Ubicación del archivo: ', 'green', attrs=['bold']))        
                 key_path  = input(colored( '  Ubicación de su llave privada: ', 'green', attrs=['bold']))
-                sign_file(file_path, key_path, '/home')                               
+                sign_file(file_path, key_path, '/home/prueba.sign')                               
             elif(option == "2"):        
                 print('Por favor, proporcione los siguientes datos:')  
                 cert_path = input(colored( '  Ubicación de su certificado digital: ', 'green', attrs=['bold'])) 
