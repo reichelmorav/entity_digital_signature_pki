@@ -4,7 +4,7 @@ from tabulate import tabulate
 from termcolor import colored
 from OpenSSL import crypto
 
-def set_time_stamp(file_path, tsr_path, tsq_path ):
+def set_time_stamp(file_path, tsr_path, tsq_path):
     command = "./time_stamp.sh " + file_path + " " + tsr_path + " " + tsq_path
     os.system(command)    
 
@@ -37,8 +37,8 @@ def main():
             option = input("Ingrese el número de la opción deseada: ")
             if(option == "1"):      
                 print('Por favor, proporcione los siguientes datos:')  
-                file_path = input(colored( '  Ubicación del archivo: ', 'green', attrs=['bold']))       
-                key_path  = input(colored( '  Ubicación de su llave privada: ', 'green', attrs=['bold']))               
+                file_path = input(colored( '  Ubicación del archivo: ', 'green', attrs=['bold']))        
+                key_path  = input(colored( '  Ubicación de su llave privada: ', 'green', attrs=['bold']))                               
             elif(option == "2"):        
                 print('Por favor, proporcione los siguientes datos:')  
                 cert_path = input(colored( '  Ubicación de su certificado digital: ', 'green', attrs=['bold'])) 
