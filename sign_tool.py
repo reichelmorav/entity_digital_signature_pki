@@ -18,7 +18,7 @@ def sign_file(folder_path, file_name, key_name):
     file = open(file_to_sign, 'r')
     sign = crypto.sign(key, file.read().encode(), "sha512")
 
-    sign_file = open(file_to_sign + 'sign', 'wb')
+    sign_file = open(file_to_sign + '.sign', 'wb')
     sign_file.write(sign)
     sign_file.close()     
 
