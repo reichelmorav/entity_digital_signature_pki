@@ -39,7 +39,7 @@ def main():
                 print('Por favor, proporcione los siguientes datos:')  
                 file_path = input(colored( '  Ubicación del archivo: ', 'green', attrs=['bold']))        
                 key_path  = input(colored( '  Ubicación de su llave privada: ', 'green', attrs=['bold']))
-                sign_file(file_path, key_path, '/home/prueba.sign')                               
+                sign_file(file_path, key_path, 'prueba.sign')                               
             elif(option == "2"):        
                 print('Por favor, proporcione los siguientes datos:')  
                 cert_path = input(colored( '  Ubicación de su certificado digital: ', 'green', attrs=['bold'])) 
