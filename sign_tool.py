@@ -47,16 +47,16 @@ def main():
             elif(option == "2"):        
                 print('Por favor, proporcione los siguientes datos:')  
                 folder_path = input(colored( '  Ruta de la carpeta de archivos: ', 'green', attrs=['bold']))                
-                cert_name = input(colored( '  Nombre de su certificado digital: ', 'green', attrs=['bold'])) 
-                sign_name = input(colored( '  Nombre la firma digital: ', 'green', attrs=['bold'])) 
+                cert_name = input(colored( '  Nombre de su certificado digital: ', 'green', attrs=['bold']))                 
                 file_name = input(colored( '  Nombre del archivo: ', 'green', attrs=['bold']))        
+                sign_name = input(colored( '  Nombre del aehivo de firma digital: ', 'green', attrs=['bold'])) 
                 verify_sign(folder_path, cert_name, sign_name, file_name)
             elif(option == "3"):            
                 break
             else:
                 print("La opción seleccionada es incorrecta. Inténtelo de nuevo.\n")
         except BaseException as exception:
-            logger.error('Disculpe, hay un error. Comuníquese con el equipo de TI de la organización. '+ str(exception))
+            logger.error('Disculpe, hay un error. Comuníquese con el equipo de TI de la organización.\n'+ str(exception))
             break
 
 if __name__ == "__main__":    
