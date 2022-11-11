@@ -41,30 +41,30 @@ def verify_sign(folder_path, cert_name, signature_name, file_name):
 
 def main():       
     while(True):    
-        try:                  
-            table = [['BIENVENIDO(A) A LA APLICACIÓN DE FIRMA DIGITAL DE LA UCR'], ['1. Firmar documento'], ['2. Validar firma'], ['3. Salir']]
-            print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
-            option = input("Ingrese el número de la opción deseada: ")
-            if(option == "1"):      
-                print('Por favor, proporcione los siguientes datos:')  
-                folder_path = input(colored( '  Ruta de la carpeta de archivos: ', 'green', attrs=['bold']))   
-                file_name = input(colored( '  Nombre del archivo: ', 'green', attrs=['bold']))        
-                key_name  = input(colored( '  Nombre de la llave privada: ', 'green', attrs=['bold']))                
-                sign_file(folder_path, file_name, key_name)                               
-            elif(option == "2"):        
-                print('Por favor, proporcione los siguientes datos:')  
-                folder_path = input(colored( '  Ruta de la carpeta de archivos: ', 'green', attrs=['bold']))                
-                cert_name = input(colored( '  Nombre de su certificado digital: ', 'green', attrs=['bold']))                 
-                file_name = input(colored( '  Nombre del archivo: ', 'green', attrs=['bold']))        
-                sign_name = input(colored( '  Nombre del aehivo de firma digital: ', 'green', attrs=['bold'])) 
-                verify_sign(folder_path, cert_name, sign_name, file_name)
-            elif(option == "3"):            
-                break
-            else:
-                print("La opción seleccionada es incorrecta. Inténtelo de nuevo.\n")
-        except BaseException as exception:
-            logger.error('Disculpe, hay un error. Comuníquese con el equipo de TI de la organización.\n'+ str(exception))
+        # try:                  
+        table = [['BIENVENIDO(A) A LA APLICACIÓN DE FIRMA DIGITAL DE LA UCR'], ['1. Firmar documento'], ['2. Validar firma'], ['3. Salir']]
+        print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
+        option = input("Ingrese el número de la opción deseada: ")
+        if(option == "1"):      
+            print('Por favor, proporcione los siguientes datos:')  
+            folder_path = input(colored( '  Ruta de la carpeta de archivos: ', 'green', attrs=['bold']))   
+            file_name = input(colored( '  Nombre del archivo: ', 'green', attrs=['bold']))        
+            key_name  = input(colored( '  Nombre de la llave privada: ', 'green', attrs=['bold']))                
+            sign_file(folder_path, file_name, key_name)                               
+        elif(option == "2"):        
+            print('Por favor, proporcione los siguientes datos:')  
+            folder_path = input(colored( '  Ruta de la carpeta de archivos: ', 'green', attrs=['bold']))                
+            cert_name = input(colored( '  Nombre de su certificado digital: ', 'green', attrs=['bold']))                 
+            file_name = input(colored( '  Nombre del archivo: ', 'green', attrs=['bold']))        
+            sign_name = input(colored( '  Nombre del aehivo de firma digital: ', 'green', attrs=['bold'])) 
+            verify_sign(folder_path, cert_name, sign_name, file_name)
+        elif(option == "3"):            
             break
+        else:
+            print("La opción seleccionada es incorrecta. Inténtelo de nuevo.\n")
+        # except BaseException as exception:
+        #     logger.error('Disculpe, hay un error. Comuníquese con el equipo de TI de la organización.\n'+ str(exception))
+        #     break
 
 if __name__ == "__main__":    
     main()
