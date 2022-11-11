@@ -21,6 +21,8 @@ def sign_file(file_path, key_path, signature_path):
     sign_file.write(sign)
     sign_file.close()     
 
+    set_time_stamp(file_path, 'tsr.tsr', 'tsq.tsq')
+
 def verify_sign(cert_path, signature_path, file_path):    
     cert_file = open(cert_path, "rb")
     cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert_file.read())    
