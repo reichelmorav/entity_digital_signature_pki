@@ -26,7 +26,7 @@ def sign_file(folder_path, file_name, key_name):
 
 def verify_sign(folder_path, cert_name, signature_name, file_name):   
     print("Hola 1") 
-    crt_file = open(folder_path + cert_name, "r")
+    crt_file = open(folder_path + cert_name, "rt")
     print("Hola 2") 
     print(crt_file.read())
     cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read()) 
