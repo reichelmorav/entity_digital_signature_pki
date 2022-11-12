@@ -32,7 +32,11 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
     sign_file = open(folder_path + signature_name, 'rb')    
     sign = sign_file.read()    
     file = open(folder_path + file_name, 'r')    
-    crypto.verify(cert, sign, file.read().encode(), "sha512")    
+    try:
+        crypto.verify(cert, sign, file.read().encode(), "sha512")      
+        print(colored("La firma es válida.", 'green', attrs=['bold']))     
+    except:
+        print(colored("La firma no es válida.", 'red', attrs=['bold']))     
 
 def main():       
     while(True):    
