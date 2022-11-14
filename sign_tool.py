@@ -5,14 +5,15 @@ from OpenSSL import crypto
 from tabulate import tabulate
 from termcolor import colored
 import subprocess
+import re
 
 def set_time_stamp(file_path, tsr_path, tsq_path):
     command = "./time_stamp.sh " + file_path + " " + tsr_path + " " + tsq_path
     os.system(command)    
 
-def verify_cert_ocsp(folder_path, cert_name):
-    command = "./ocsp_validator.sh " + folder_path + cert_name    
-    os.system(command)
+def verify_cert_ocsp(folder_path, cert_name):      
+    result = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
+    print(re.search('AAA(.+?)ZZZ', result[0]).group(1))
 
 def sign_file(folder_path, file_name, key_name):   
     file_to_sign = folder_path + file_name
@@ -42,7 +43,7 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
         print(colored("La firma no es válida.\n", 'red', attrs=['bold']))     
 
 def main():       
-    p = subprocess.Popen("./ocsp_validator.sh " + "/home/admin/facultaddemate/facultaddemate.pem", stdout=subprocess.PIPE, shell=True)
+    p = 
     print(p.communicate())
     while(True):    
         try:                  
