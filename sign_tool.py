@@ -28,7 +28,8 @@ def sign_file(folder_path, file_name, key_name):
 
 def verify_sign(folder_path, cert_name, file_name, signature_name):      
     crt_file = open(folder_path + cert_name, "r")   
-    cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())     
+    cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())
+    verify_cert_ocsp(folder_path, cert_name)     
     sign_file = open(folder_path + signature_name, 'rb')    
     sign = sign_file.read()    
     file = open(folder_path + file_name, 'r')    
