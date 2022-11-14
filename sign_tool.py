@@ -4,6 +4,7 @@ from asyncio.log import logger
 from OpenSSL import crypto
 from tabulate import tabulate
 from termcolor import colored
+import subprocess
 
 def set_time_stamp(file_path, tsr_path, tsq_path):
     command = "./time_stamp.sh " + file_path + " " + tsr_path + " " + tsq_path
@@ -11,7 +12,7 @@ def set_time_stamp(file_path, tsr_path, tsq_path):
 
 def verify_cert_ocsp(folder_path, cert_name):
     command = "./ocsp_validator.sh " + folder_path + cert_name    
-    print(os.system(command))
+    os.system(command)
 
 def sign_file(folder_path, file_name, key_name):   
     file_to_sign = folder_path + file_name
@@ -41,6 +42,8 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
         print(colored("La firma no es válida.\n", 'red', attrs=['bold']))     
 
 def main():       
+    p = subprocess.Popen("ls -lh", stdout=subprocess.PIPE, shell=True)
+    print(p.communicate())
     while(True):    
         try:                  
             table = [['BIENVENIDO(A) A LA APLICACIÓN DE FIRMA DIGITAL DE LA UCR'], ['1. Firmar documento'], ['2. Validar firma'], ['3. Salir']]
