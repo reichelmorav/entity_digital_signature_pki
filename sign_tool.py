@@ -12,8 +12,8 @@ def set_time_stamp(file_path, tsr_path, tsq_path):
     os.system(command)    
 
 def verify_cert_ocsp(folder_path, cert_name):      
-    result = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
-    print(re.search(':(.+?)\n', result[0]).group(1))
+    p = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
+    print(re.search(':(.+?)\n', p.communicate()[0]).group(1))
 
 def sign_file(folder_path, file_name, key_name):   
     file_to_sign = folder_path + file_name
