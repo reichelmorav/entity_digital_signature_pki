@@ -42,7 +42,7 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
         print(colored("La firma no es válida.\n", 'red', attrs=['bold']))     
 
 def main():       
-    p = subprocess.Popen("./ocsp_validator.sh " + "/home/admin/facultaddematefacultaddemate.pem", stdout=subprocess.PIPE, shell=True)
+    p = subprocess.Popen("./ocsp_validator.sh " + "/home/admin/facultaddemate/facultaddemate.pem", stdout=subprocess.PIPE, shell=True)
     print(p.communicate())
     while(True):    
         try:                  
