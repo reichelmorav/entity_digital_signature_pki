@@ -13,7 +13,8 @@ def set_time_stamp(file_path, tsr_path, tsq_path):
 
 def verify_cert_ocsp(folder_path, cert_name):      
     p = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
-    print(re.search(':(.+?)\n', p.communicate()[0]).group(1))
+    out, err = p.communicate()    
+    print(re.search(':(.+?)\n', out).group(1))
 
 def sign_file(folder_path, file_name, key_name):   
     file_to_sign = folder_path + file_name
