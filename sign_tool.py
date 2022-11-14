@@ -1,12 +1,31 @@
-from asyncio.log import logger
+from importlib.machinery import ExtensionFileLoader
 import os
+from asyncio.log import logger
+
+
+from OpenSSL import crypto
 from tabulate import tabulate
 from termcolor import colored
-from OpenSSL import crypto
+
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.hashes import SHA256
+from cryptography.x509 import ocsp
+from cryptography.x509.ocsp import OCSPResponseStatus
+from cryptography.x509.oid import ExtensionOID, AuthorityInformationAccessOID
+
 
 def set_time_stamp(file_path, tsr_path, tsq_path):
     command = "./time_stamp.sh " + file_path + " " + tsr_path + " " + tsq_path
     os.system(command)    
+
+def get_issuer(cert):
+    aia = cert.extensions.get_extension_for_oid(ExtensionFileLoader.AUTHORITY_INFORMATION_ACCESS).value
+    issuers = [ia for ia in aia if ia.access_method == AuthorityInformationAccessOID.CA_ISSUERS]
+    if not issuers:
+        raise Exception(f'no issuers entry in AIA')
+    return issuers[0].access_location.value
 
 def verify_cert_ocsp(folder_path, cert_name):
     command = "./ocsp_validator.sh " + folder_path + cert_name
@@ -29,7 +48,8 @@ def sign_file(folder_path, file_name, key_name):
 def verify_sign(folder_path, cert_name, file_name, signature_name):      
     crt_file = open(folder_path + cert_name, "r")   
     cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())
-    verify_cert_ocsp(folder_path, cert_name)     
+    #verify_cert_ocsp(folder_path, cert_name)     
+    print(get_issuer(cert))
     sign_file = open(folder_path + signature_name, 'rb')    
     sign = sign_file.read()    
     file = open(folder_path + file_name, 'r')    
