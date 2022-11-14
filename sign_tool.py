@@ -1,6 +1,7 @@
 from importlib.machinery import ExtensionFileLoader
 import os
 from asyncio.log import logger
+import sys
 from OpenSSL import crypto
 from tabulate import tabulate
 from termcolor import colored
@@ -14,7 +15,7 @@ def set_time_stamp(file_path, tsr_path, tsq_path):
 def verify_cert_ocsp(folder_path, cert_name):      
     p = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
     out, err = p.communicate()    
-    print(re.search(':(.+?)\n', out.decode()).group(1))
+    return re.search(':(.+?)\n', out.decode()).group(1)
 
 def sign_file(folder_path, file_name, key_name):   
     file_to_sign = folder_path + file_name
@@ -32,16 +33,20 @@ def sign_file(folder_path, file_name, key_name):
 
 def verify_sign(folder_path, cert_name, file_name, signature_name):      
     crt_file = open(folder_path + cert_name, "r")   
-    cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())
-    verify_cert_ocsp(folder_path, cert_name)         
-    sign_file = open(folder_path + signature_name, 'rb')    
-    sign = sign_file.read()    
-    file = open(folder_path + file_name, 'r')    
-    try:
-        crypto.verify(cert, sign, file.read().encode(), "sha512")      
-        print(colored("La firma es válida.", 'green', attrs=['bold']))     
-    except:
-        print(colored("La firma no es válida.\n", 'red', attrs=['bold']))     
+    cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())    
+    verify_cert_ocsp(folder_path, cert_name)   
+    if(verify_cert_ocsp(folder_path, cert_name) == " good"):
+        sign_file = open(folder_path + signature_name, 'rb')    
+        sign = sign_file.read()    
+        file = open(folder_path + file_name, 'r')    
+        try:
+            crypto.verify(cert, sign, file.read().encode(), "sha512")      
+            print(colored("La firma es válida.", 'green', attrs=['bold']))     
+        except:
+            print(colored("La firma no es válida.\n", 'red', attrs=['bold'])) 
+    else:
+        print("The certificate is revoked.")  
+        sys.exit(0) 
 
 def main():       
     while(True):    
