@@ -43,8 +43,6 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
         print(colored("La firma no es válida.\n", 'red', attrs=['bold']))     
 
 def main():       
-    p = 
-    print(p.communicate())
     while(True):    
         try:                  
             table = [['BIENVENIDO(A) A LA APLICACIÓN DE FIRMA DIGITAL DE LA UCR'], ['1. Firmar documento'], ['2. Validar firma'], ['3. Salir']]
