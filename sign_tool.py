@@ -17,7 +17,7 @@ def verify_cert_ocsp(folder_path, cert_name):
     out, err = p.communicate()    
     print(out)
     print (re.search(': (.+?)\n', out.decode()).group(1))
-    return re.search(':\n(.+?)\n', out.decode()).group(1)
+    return re.search(': (.+?)\n', out.decode()).group(1)
 
 def sign_file(folder_path, file_name, key_name):   
     file_to_sign = folder_path + file_name
