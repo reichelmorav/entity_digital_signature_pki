@@ -15,6 +15,7 @@ def set_time_stamp(file_path, tsr_path, tsq_path):
 def verify_cert_ocsp(folder_path, cert_name):      
     p = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
     out, err = p.communicate()    
+    print(out)
     print (re.search(':\n(.+?)\n', out.decode()).group(1))
     return re.search(':\n(.+?)\n', out.decode()).group(1)
 
