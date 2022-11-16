@@ -14,7 +14,8 @@ def set_time_stamp(file_path, tsr_path, tsq_path):
 
 def verify_cert_ocsp(folder_path, cert_name):      
     p = subprocess.Popen("./ocsp_validator.sh " + folder_path + cert_name, stdout=subprocess.PIPE, shell=True)    
-    out, err = p.communicate()       
+    out, err = p.communicate()  
+    print(out)     
     return re.search(': (.+?)\n', out.decode()).group(1)
 
 def sign_file(folder_path, file_name, key_name):   
@@ -28,14 +29,13 @@ def sign_file(folder_path, file_name, key_name):
     sign_file.write(sign)
     sign_file.close()         
     set_time_stamp(file_to_sign, file_to_sign + '.tsr', file_to_sign + '.tsq')
-
-    print("La firma digital del archivo fue realizada con éxito.")
+    
+    print(colored("La firma digital del archivo fue realizada con éxito.\n", 'blue', attrs=['bold']))
 
 def verify_sign(folder_path, cert_name, file_name, signature_name):      
     crt_file = open(folder_path + cert_name, "r")   
-    cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())    
-    verify_cert_ocsp(folder_path, cert_name)   
-    if(verify_cert_ocsp(folder_path, cert_name) == " good"):
+    cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())         
+    if(verify_cert_ocsp(folder_path, cert_name) == "good"):
         sign_file = open(folder_path + signature_name, 'rb')    
         sign = sign_file.read()    
         file = open(folder_path + file_name, 'r')    
@@ -45,8 +45,7 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
         except:
             print(colored("La firma no es válida.\n", 'red', attrs=['bold'])) 
     else:
-        print("The certificate is revoked.")  
-        sys.exit(0) 
+        print(colored("El certificado se encuentra revocado. No es posible validar la firma.\n", 'red', attrs=['bold']))          
 
 def main():       
     while(True):    
