@@ -52,7 +52,7 @@ def verify_sign(folder_path, cert_name, file_name, signature_name):
 
 def main():       
     while(True):    
-        try:                  
+        # try:                  
             table = [['BIENVENIDO(A) A LA APLICACIÓN DE FIRMA DIGITAL DE LA UCR'], ['1. Firmar documento'], ['2. Validar firma'], ['3. Salir']]
             print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
             option = input("Ingrese el número de la opción deseada: ")
@@ -73,9 +73,9 @@ def main():
                 break
             else:
                 print("La opción seleccionada es incorrecta. Inténtelo de nuevo.\n")
-        except BaseException as exception:
-            logger.error('Disculpe, hay un error. Comuníquese con el equipo de TI de la organización.\n'+ str(exception))
-            break
+        # except BaseException as exception:
+        #     logger.error('Disculpe, hay un error. Comuníquese con el equipo de TI de la organización.\n'+ str(exception))
+        #     break
 
 if __name__ == "__main__":    
     main()
