@@ -34,16 +34,16 @@ def sign_file(folder_path, file_name, key_name):
 def verify_sign(folder_path, cert_name, file_name, signature_name):      
     crt_file = open(folder_path + cert_name, "r")   
     cert = crypto.load_certificate(crypto.FILETYPE_PEM, crt_file.read())         
-    if(verify_cert_ocsp(folder_path, cert_name) == "good"):
-        sign_file = open(folder_path + signature_name, 'rb')   
-        sign = sign_file.read()   
-        file = open(folder_path + file_name, 'r')    
-        try:
-            crypto.verify(cert, sign, file.read().encode(), "sha512")      
-            print(colored("La firma es válida.\n", 'yellow', attrs=['bold']))     
-        except:
-            print(colored("La firma no es válida.\n", 'red', attrs=['bold'])) 
-    else:
+    #if(verify_cert_ocsp(folder_path, cert_name) == "good"):
+    sign_file = open(folder_path + signature_name, 'rb')   
+    sign = sign_file.read()   
+    file = open(folder_path + file_name, 'r')    
+    try:
+        crypto.verify(cert, sign, file.read().encode(), "sha512")      
+        print(colored("La firma es válida.\n", 'yellow', attrs=['bold']))     
+    except:
+        print(colored("La firma no es válida.\n", 'red', attrs=['bold'])) 
+    #else:
         print(colored("El certificado se encuentra revocado. No es posible validar la firma.\n", 'red', attrs=['bold']))          
 
 def main():       
